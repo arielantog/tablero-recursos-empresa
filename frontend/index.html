@@ -1,0 +1,381 @@
+﻿<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tablero Recursos | Practical Solutions</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles.css" />
+  </head>
+  <body>
+    <div class="bg-glow bg-glow-left" aria-hidden="true"></div>
+    <div class="bg-glow bg-glow-right" aria-hidden="true"></div>
+
+    <main class="layout">
+      <header class="brand-bar">
+        <img
+          id="brandLogo"
+          src="./assets/practical-solutions-logo-dark.png"
+          alt="Practical Solutions"
+          class="brand-logo"
+          data-logo-light="./assets/practical-solutions-logo-light.png"
+          data-logo-dark="./assets/practical-solutions-logo-dark.png"
+        />
+        <button id="themeToggle" class="theme-toggle" type="button" aria-label="Cambiar tema">
+          <svg class="theme-icon theme-icon-sun" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="4"></circle>
+            <path
+              d="M12 2v3M12 19v3M4.93 4.93l2.12 2.12M16.95 16.95l2.12 2.12M2 12h3M19 12h3M4.93 19.07l2.12-2.12M16.95 7.05l2.12-2.12"
+            ></path>
+          </svg>
+          <svg class="theme-icon theme-icon-moon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"></path>
+          </svg>
+        </button>
+      </header>
+
+      <section class="hero">
+        <h1>Gestión de clientes, personas y rentabilidad</h1>
+        <p class="hero-text">
+          Cargá clientes y personas, definí tarifas por alcance y seguí la facturación estimada
+          contra sueldos para medir cobertura y desempeño del equipo.
+        </p>
+      </section>
+
+      <section class="panel" id="section-clients">
+        <div class="panel-title">
+          <h2>Gestión de clientes</h2>
+        </div>
+
+        <form id="client-form" class="inline-form">
+          <label>
+            Nuevo cliente
+            <input id="client-name" type="text" placeholder="Ej: Nova Labs" required />
+          </label>
+          <button class="primary-btn" type="submit">Crear cliente</button>
+        </form>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Cliente</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="clients-admin-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel" id="section-people">
+        <div class="panel-title">
+          <h2>Gestión de personas</h2>
+        </div>
+
+        <form id="person-form" class="inline-form inline-form-people">
+          <label>
+            Nueva persona
+            <input id="person-name" type="text" placeholder="Ej: Ana Gomez" required />
+          </label>
+          <label>
+            Sueldo mensual (ARS)
+            <input
+              id="person-salary"
+              type="text"
+              inputmode="numeric"
+              autocomplete="off"
+              placeholder="Ej: 1.800.000"
+              required
+            />
+          </label>
+          <button class="primary-btn" type="submit">Crear persona</button>
+        </form>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Persona</th>
+                <th>Sueldo mensual</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="people-admin-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel" id="section-client-rules">
+        <div class="panel-title">
+          <h2>Tarifas por cliente, categoría y persona</h2>
+          <p class="muted">
+            Prioridad: persona + categoría &gt; persona &gt; categoría &gt; cliente
+          </p>
+        </div>
+
+        <div class="config-grid">
+          <article class="sub-panel">
+            <h3>Categorías del cliente</h3>
+            <label>
+              Cliente
+              <select id="rate-client" required></select>
+            </label>
+            <form id="billing-category-form" class="inline-form">
+              <label>
+                Nueva categoría
+                <input id="billing-category-name" type="text" placeholder="Ej: Developer, PM, QA..." required />
+              </label>
+              <button class="primary-btn" type="submit">Agregar</button>
+            </form>
+            <div id="client-categories-list" class="tag-list"></div>
+          </article>
+
+          <article class="sub-panel">
+            <h3>Alcance de la regla</h3>
+            <p class="muted">Si no indicás categoría ni persona, la regla aplica a todo el cliente.</p>
+            <form id="rate-rule-form" class="form-grid compact-form">
+              <label>
+                Moneda
+                <select id="currency" required>
+                  <option value="USD">USD</option>
+                  <option value="ARS">ARS</option>
+                </select>
+              </label>
+              <label>
+                Valor hora
+                <input id="hourly-rate" type="number" step="0.01" min="0" required />
+              </label>
+              <label>
+                Vigencia desde
+                <input id="effective-from" type="date" required />
+              </label>
+              <label>
+                Categoría (opcional)
+                <select id="rule-category">
+                  <option value="">Sin categoría</option>
+                </select>
+              </label>
+              <label>
+                Persona (opcional)
+                <select id="rule-person">
+                  <option value="">Sin persona</option>
+                </select>
+              </label>
+              <button class="primary-btn" type="submit">Guardar regla</button>
+            </form>
+          </article>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead id="client-rules-head">
+              <tr>
+                <th class="sortable" data-rule-sort-key="effectiveFrom">Vigencia</th>
+                <th class="sortable" data-rule-sort-key="scope">Alcance</th>
+                <th class="sortable" data-rule-sort-key="currency">Moneda</th>
+                <th class="sortable" data-rule-sort-key="hourlyRate">Valor/h</th>
+                <th>Acciones</th>
+              </tr>
+            </thead>
+            <tbody id="client-rate-rules-body"></tbody>
+          </table>
+        </div>
+      </section>
+
+      <section class="panel" id="section-time-entries">
+        <div class="panel-title">
+          <h2>Carga de horas por cliente y categoría</h2>
+        </div>
+
+        <form id="time-entry-form" class="form-grid">
+          <label>
+            Persona
+            <select id="time-person" required></select>
+          </label>
+          <label>
+            Cliente
+            <select id="time-client" required></select>
+          </label>
+          <label>
+            Categoría (opcional)
+            <select id="time-category">
+              <option value="">Sin categoría</option>
+            </select>
+          </label>
+          <label>
+            Fecha
+            <input id="time-work-date" type="date" required />
+          </label>
+          <label>
+            Horas
+            <input id="time-hours" type="number" step="0.25" min="0.25" max="24" required />
+          </label>
+          <button id="time-submit" type="submit" class="primary-btn">Registrar horas</button>
+        </form>
+      </section>
+
+      <section class="panel" id="section-dashboard">
+        <div class="panel-title">
+          <h2>Dashboard de empleados</h2>
+        </div>
+
+        <div class="filters">
+          <label>
+            Desde
+            <input id="from-date" type="date" />
+          </label>
+          <label>
+            Hasta
+            <input id="to-date" type="date" />
+          </label>
+          <div class="currency-switch">
+            <span>Moneda</span>
+            <label class="switch" for="currency-toggle">
+              <input id="currency-toggle" type="checkbox" />
+              <span class="switch-slider"></span>
+            </label>
+            <strong id="currency-label">ARS</strong>
+          </div>
+          <button id="refresh-metrics" class="primary-btn" type="button">Actualizar</button>
+        </div>
+
+        <div id="totals" class="totals"></div>
+        <p id="exchange-note" class="exchange-note"></p>
+        <div class="chart-card">
+          <div class="chart-head">
+            <h3>Sueldo mensual por empleado</h3>
+            <span id="salary-chart-currency" class="muted">ARS</span>
+          </div>
+          <div id="utilization-chart" class="utilization-chart"></div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead id="employees-head">
+              <tr>
+                <th class="sortable" data-sort-key="name">Empleado</th>
+                <th class="sortable" data-sort-key="salary">Sueldo</th>
+                <th class="sortable" data-sort-key="hours">Horas</th>
+                <th class="sortable" data-sort-key="costPerHour">Costo/h</th>
+                <th class="sortable" data-sort-key="billing">Facturación</th>
+                <th class="sortable" data-sort-key="billingPerHour">Fact./h</th>
+                <th class="sortable" data-sort-key="coverage">Fact./sueldo</th>
+              </tr>
+            </thead>
+            <tbody id="employees-body"></tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+
+    <div id="rate-edit-modal" class="modal hidden" aria-hidden="true">
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="rate-edit-title">
+        <h3 id="rate-edit-title">Editar valor histórico</h3>
+        <form id="rate-edit-form" class="modal-form">
+          <label>
+            Nuevo valor hora
+            <input id="rate-edit-value" type="number" step="0.01" min="0" required />
+          </label>
+          <div class="modal-actions">
+            <button id="rate-edit-cancel" type="button" class="tiny-btn">Cancelar</button>
+            <button type="submit" class="primary-btn">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div id="rate-delete-modal" class="modal hidden" aria-hidden="true">
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="rate-delete-title">
+        <h3 id="rate-delete-title">Eliminar valor histórico</h3>
+        <p class="modal-text">Esta acción no se puede deshacer. ¿Querés continuar?</p>
+        <div class="modal-actions">
+          <button id="rate-delete-cancel" type="button" class="tiny-btn">Cancelar</button>
+          <button id="rate-delete-confirm" type="button" class="primary-btn">Eliminar</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="action-confirm-modal" class="modal hidden" aria-hidden="true">
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="action-confirm-title">
+        <h3 id="action-confirm-title">Confirmar acción</h3>
+        <p id="action-confirm-text" class="modal-text">¿Querés continuar?</p>
+        <div class="modal-actions">
+          <button id="action-confirm-cancel" type="button" class="tiny-btn">Cancelar</button>
+          <button id="action-confirm-confirm" type="button" class="primary-btn">Confirmar</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="rule-edit-modal" class="modal hidden" aria-hidden="true">
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="rule-edit-title">
+        <h3 id="rule-edit-title">Editar regla de tarifa</h3>
+        <form id="rule-edit-form" class="modal-form">
+          <label>
+            Nuevo valor hora
+            <input id="rule-edit-value" type="number" step="0.01" min="0.01" required />
+          </label>
+          <div class="modal-actions">
+            <button id="rule-edit-cancel" type="button" class="tiny-btn">Cancelar</button>
+            <button id="rule-edit-confirm" type="submit" class="primary-btn">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div id="client-edit-modal" class="modal hidden" aria-hidden="true">
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="client-edit-title">
+        <h3 id="client-edit-title">Editar cliente</h3>
+        <form id="client-edit-form" class="modal-form">
+          <label>
+            Nombre
+            <input id="client-edit-name" type="text" required />
+          </label>
+          <div class="modal-actions">
+            <button id="client-edit-cancel" type="button" class="tiny-btn">Cancelar</button>
+            <button type="submit" class="primary-btn">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div id="person-edit-modal" class="modal hidden" aria-hidden="true">
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="person-edit-title">
+        <h3 id="person-edit-title">Editar persona</h3>
+        <form id="person-edit-form" class="modal-form">
+          <label>
+            Nombre
+            <input id="person-edit-name" type="text" required />
+          </label>
+          <label>
+            Sueldo mensual (ARS)
+            <input id="person-edit-salary" type="text" inputmode="numeric" autocomplete="off" required />
+          </label>
+          <div class="modal-actions">
+            <button id="person-edit-cancel" type="button" class="tiny-btn">Cancelar</button>
+            <button type="submit" class="primary-btn">Guardar</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div id="info-modal" class="modal hidden" aria-hidden="true">
+      <div class="modal-card" role="dialog" aria-modal="true" aria-labelledby="info-modal-title">
+        <h3 id="info-modal-title">Aviso</h3>
+        <p id="info-modal-text" class="modal-text"></p>
+        <div class="modal-actions">
+          <button id="info-modal-close" type="button" class="primary-btn">Cerrar</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="./app.js" type="module"></script>
+  </body>
+</html>
+
+

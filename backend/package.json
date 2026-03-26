@@ -1,0 +1,24 @@
+﻿{
+  "name": "tablero-recursos-empresa",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon --quiet server.js",
+    "start": "node server.js",
+    "db:init": "node db/init.js",
+    "db:seed": "node db/seed.js",
+    "db:restore:initial": "node db/restore-initial.js"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^16.6.1",
+    "express": "^4.21.2",
+    "pg": "^8.16.3"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
+  }
+}
+
+
